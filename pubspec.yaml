@@ -16,7 +16,17 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 flutter:
+
+  fonts:
+    - family: Roboto  # Ganti dengan nama keluarga font
+      fonts:
+        - asset: fonts/Roboto-Bold.ttf
+          weight: 600
+
+  
+        
   uses-material-design: true
   assets:
 
     - assets/images/
+
