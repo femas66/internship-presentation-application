@@ -21,7 +21,7 @@ class _HorizontalScreenState extends State<HorizontalScreen>
 
   Future<void> navigateToNextPageAfterDelay() async {
     // Menunda navigasi selama 5 detik
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 6));
     // Melakukan navigasi ke halaman lain menggunakan Navigator
     Navigator.pushReplacement(
       context,
@@ -49,7 +49,7 @@ class _HorizontalScreenState extends State<HorizontalScreen>
             Center(
               child: Container(
                 width: 350,
-                child: Image.asset("assets/images/pklhummatech.png"),
+                child: Image.asset('assets/gif/splashscreen.gif'),
               ),
             ),
           ],

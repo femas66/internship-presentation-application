@@ -1,57 +1,88 @@
 import 'package:flutter/material.dart';
 
-class SelectableContainer extends StatelessWidget {
-  final int index;
-  final IconData icon;
-  final String text;
-  final int selectedIndex;
-  final Function(int) onTap;
+class ContainerColumn extends StatefulWidget {
+  @override
+  _ContainerColumnState createState() => _ContainerColumnState();
+}
 
-  const SelectableContainer({
-    Key? key,
-    required this.index,
-    required this.icon,
-    required this.text,
-    required this.selectedIndex,
-    required this.onTap,
-  }) : super(key: key);
+class _ContainerColumnState extends State<ContainerColumn> {
+  int selectedIndex = 0; // Indeks container yang aktif, diinisialisasi dengan 0
+
+  // Variabel untuk menyimpan path image dan text sesuai index
+  final List<dynamic> icons = [
+    Icons.computer_rounded,
+    Icons.color_lens,
+    Icons.analytics,
+    Icons.phone_iphone_rounded
+  ];
+
+  final List<String> texts = [
+    'Devisi Web',
+    'Devisi UI/UX',
+    'Devisi Digital Marketing',
+    'Devisi Mobile',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = selectedIndex == index;
-
-    return InkWell(
-      onTap: () => onTap(index),
-      child: Container(
-        padding: EdgeInsets.only(left: 5, right: 5),
-        height: 63,
-        width: 238,
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 2,
-              color: Color.fromARGB(255, 204, 204, 204),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: isSelected ? Colors.white : Color(0xff0099FF)),
-            SizedBox(width: 10),
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Roboto',
-                color: isSelected ? Colors.white : Color(0xff0099FF),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(4, (index) {
+        bool isSelected = index == selectedIndex;
+        return Expanded(
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              margin: EdgeInsets.only(top: 15, bottom: 15),
+              height: 63,
+              width: 257,
+              decoration: BoxDecoration(
+                color: isSelected ? Colors.blue : Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x499c9c9c),
+                    offset: Offset(0, 0),
+                    blurRadius: 3,
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  if (icons[index] is IconData)
+                    Icon(
+                      icons[index],
+                      color: isSelected ? Colors.white : Color(0xff0099FF),
+                      size: 24,
+                    )
+                  else
+                    Image.asset(
+                      icons[index],
+                      color: isSelected ? Colors.white : Color(0xff0099FF),
+                      width: 24,
+                      height: 24,
+                    ),
+                  SizedBox(width: 10),
+                  Text(
+                    texts[index],
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Roboto',
+                      color: isSelected ? Colors.white : Color(0xff0099FF),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
