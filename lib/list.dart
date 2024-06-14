@@ -1,26 +1,18 @@
-import 'package:absensipkl/Clip.dart';
-import 'package:absensipkl/Registrasi.dart';
-import 'package:absensipkl/animasi%20container.dart';
-import 'package:absensipkl/container%20jadwal.dart';
-import 'package:absensipkl/container.dart';
-import 'package:absensipkl/custom.dart';
-import 'package:absensipkl/status%20presentasi.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:absensipkl/presentation/pages/landing/landing_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Liste extends StatefulWidget {
-  const Liste({Key? key}) : super(key: key);
+  const Liste({super.key});
 
   @override
   State<Liste> createState() => _ListeState();
 }
 
 class _ListeState extends State<Liste> {
-  Color RedText = Color(0xffFF1111).withOpacity(0.95);
-  Color GreenText = Color(0xff00FF38);
-  Color StatusCardD = Color(0xffE9FFEB);
-  Color StatusCardB = Color(0xffFFE9E9);
+  Color RedText = const Color(0xffFF1111).withOpacity(0.95);
+  Color GreenText = const Color(0xff00FF38);
+  Color StatusCardD = const Color(0xffE9FFEB);
+  Color StatusCardB = const Color(0xffFFE9E9);
   final List<List<String>> jadwalPresentasi = [
     ["Jadwal ke-1", "14:40 - 15:30", "Tim Web"],
     ["Jadwal ke-2", "12:50 - 13:30", "Tim UI/UX"],
@@ -94,11 +86,11 @@ class _ListeState extends State<Liste> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RegistrasiTab()),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => RegistrasiTab()),
+                              // );
                             },
                             child: Expanded(
                               child: Row(

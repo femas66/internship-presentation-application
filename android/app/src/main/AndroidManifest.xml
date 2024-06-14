@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="absensipkl"
+        android:label="Hummatask Presentation"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
