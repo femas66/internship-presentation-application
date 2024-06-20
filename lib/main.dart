@@ -12,7 +12,7 @@ void main() async {
   await GetStorage.init();
   await dotenv.load(fileName: ".env");
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight,],);
   runApp(const ProviderScope(child: MainApp()));
 }
 

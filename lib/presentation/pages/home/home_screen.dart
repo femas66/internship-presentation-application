@@ -1,6 +1,7 @@
 import 'package:absensipkl/base/common/colors.dart';
 import 'package:absensipkl/base/router/navigation.dart';
 import 'package:absensipkl/custom.dart';
+import 'package:absensipkl/domain/models/team.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Team team = ModalRoute.of(context)!.settings.arguments as Team;
     return Scaffold(
       backgroundColor: whiteColor,
       body: Padding(
@@ -63,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Tim Mobile",
+                                  team.name,
                                   style: GoogleFonts.poppins(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
@@ -126,64 +128,70 @@ class _HomeScreenState extends State<HomeScreen> {
                           Expanded(
                             child: ListView(
                               children: [
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                    horizontal: 8,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: const Color.fromARGB(
-                                        255, 218, 231, 255),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        offset: Offset(0, 0),
-                                        blurRadius: 4,
-                                        color: Color(0x499c9c9c),
-                                      )
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
+                                ListView.builder(
+                                  itemCount: team.members.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 12,
+                                        horizontal: 8,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 12,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: const Color.fromARGB(
+                                            255, 218, 231, 255),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            offset: Offset(0, 0),
+                                            blurRadius: 4,
+                                            color: Color(0x499c9c9c),
+                                          )
+                                        ],
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
-                                            width: 50,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(60),
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 20,
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: 50,
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(60),
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text(
+                                                "Ketua",
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           Text(
-                                            "Ketua",
+                                            "Ketua Tim",
                                             style: GoogleFonts.poppins(
                                               fontSize: 14,
-                                              fontWeight: FontWeight.w600,
+                                              fontWeight: FontWeight.w500,
+                                              color: blackColor,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        "Ketua Tim",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: blackColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    );
+                                  },
                                 ),
                                 CustomContainer(
                                   title: 'Anggota',

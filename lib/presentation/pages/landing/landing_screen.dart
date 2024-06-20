@@ -2,23 +2,46 @@ import 'package:absensipkl/base/router/navigation.dart';
 import 'package:absensipkl/presentation/pages/home/home_screen.dart';
 import 'package:absensipkl/base/common/colors.dart';
 import 'package:absensipkl/perigatan.dart';
+import 'package:absensipkl/presentation/providers/home/home_provider.dart';
+import 'package:absensipkl/presentation/widgets/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LandingScreen extends StatefulWidget {
+class LandingScreen extends ConsumerStatefulWidget {
   static const String routeName = '/landing-screen';
   const LandingScreen({super.key});
 
   @override
-  State<LandingScreen> createState() => _LandingScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen>
-    with SingleTickerProviderStateMixin {
+class _LandingScreenState extends ConsumerState<LandingScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  bool isFocus = false;
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _focusNode.addListener(() {
+      setState(() {
+        isFocus = _focusNode.hasFocus;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final HomeNotifier homeNotifier = ref.watch(homeProvider);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SizedBox(
@@ -131,6 +154,7 @@ class _LandingScreenState extends State<LandingScreen>
                                 height: 20,
                               ),
                               TextField(
+                                autofocus: true,
                                 cursorErrorColor: Colors.transparent,
                                 focusNode: _focusNode,
                                 controller: _textEditingController,
@@ -140,25 +164,75 @@ class _LandingScreenState extends State<LandingScreen>
                                   color: Colors.transparent,
                                 ),
                                 cursorColor: Colors.transparent,
-                                onSubmitted: (value) {
-                                  Navigation.toNamed(
-                                      routeName: HomeScreen.routeName);
+                                onSubmitted: (value) async {
+                                  homeNotifier.doPresentation(value).then(
+                                    (value) {
+                                      if (value != null) {
+                                        toastSuccess(context, "Berhasil",
+                                            "Berhasil presentasi");
+                                        _textEditingController.clear();
+                                        Navigation.toNamed(
+                                          routeName: HomeScreen.routeName,
+                                          arguments: value,
+                                        );
+                                      } else {
+                                        toastDanger(
+                                            context,
+                                            "Gagal",
+                                            homeNotifier.failure?.message ??
+                                                "Gagal");
+                                        _textEditingController.clear();
+                                        FocusScope.of(context)
+                                            .requestFocus(_focusNode);
+                                      }
+                                    },
+                                  );
                                 },
                                 decoration: const InputDecoration(
                                   border: UnderlineInputBorder(
-                                      borderSide: BorderSide.none),
+                                    borderSide: BorderSide.none,
+                                  ),
                                   enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide.none),
+                                    borderSide: BorderSide.none,
+                                  ),
                                   focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide.none),
+                                    borderSide: BorderSide.none,
+                                  ),
                                 ),
                               ),
                               Text(
-                                "Tab Untuk Mulai Presentasi",
+                                "Jika scanner belum siap, silahkan klik dibawah ini!",
                                 style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  color: blackColor,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w500,
+                                  color: blackColor,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              GestureDetector(
+                                onTap: () => FocusScope.of(context)
+                                    .requestFocus(_focusNode),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: isFocus ? primaryGreen : primaryRed,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 8,
+                                  ),
+                                  child: Text(
+                                    isFocus
+                                        ? "Scanner sudah siap!"
+                                        : "Scanner belum siap!",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: whiteColor,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
