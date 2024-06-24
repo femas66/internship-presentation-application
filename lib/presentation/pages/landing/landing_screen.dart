@@ -1,4 +1,5 @@
 import 'package:absensipkl/base/router/navigation.dart';
+import 'package:absensipkl/list.dart';
 import 'package:absensipkl/presentation/pages/home/home_screen.dart';
 import 'package:absensipkl/base/common/colors.dart';
 import 'package:absensipkl/perigatan.dart';
@@ -75,10 +76,10 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => Liste()),
-                            // );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Liste()),
+                            );
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 8),

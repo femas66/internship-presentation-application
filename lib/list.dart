@@ -1,3 +1,4 @@
+import 'package:absensipkl/base/router/navigation.dart';
 import 'package:absensipkl/presentation/pages/landing/landing_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -86,11 +87,7 @@ class _ListeState extends State<Liste> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => RegistrasiTab()),
-                              // );
+                              Navigation.back();
                             },
                             child: Expanded(
                               child: Row(

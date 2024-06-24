@@ -1,6 +1,7 @@
 import 'package:absensipkl/base/common/colors.dart';
 import 'package:absensipkl/base/router/navigation.dart';
 import 'package:absensipkl/custom.dart';
+import 'package:absensipkl/domain/models/member.dart';
 import 'package:absensipkl/domain/models/team.dart';
 import 'package:absensipkl/presentation/pages/landing/landing_screen.dart';
 import 'package:absensipkl/presentation/providers/home/home_provider.dart';
@@ -75,6 +76,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(team.image ?? "Wok"),
+                                  fit: BoxFit.cover,
+                                ),
                                 borderRadius: BorderRadius.circular(60),
                                 color: Colors.black,
                               ),
@@ -82,28 +87,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const SizedBox(
                               width: 18,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  team.name,
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white),
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  "Kategori : ",
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white),
-                                ),
-                              ],
+                            Text(
+                              team.name,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
                             ),
                           ],
                         ),
@@ -154,6 +143,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   itemCount: team.members.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
+                                    final Member member = team.members[index];
                                     return Container(
                                       margin: const EdgeInsets.symmetric(
                                         vertical: 12,
@@ -185,6 +175,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                 width: 50,
                                                 height: 50,
                                                 decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: NetworkImage(
+                                                      member.avatar,
+                                                    ),
+                                                  ),
                                                   borderRadius:
                                                       BorderRadius.circular(60),
                                                   color: Colors.black,
@@ -194,7 +190,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                 width: 20,
                                               ),
                                               Text(
-                                                "Ketua",
+                                                member.name,
                                                 style: GoogleFonts.poppins(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w600,
@@ -202,46 +198,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                               ),
                                             ],
                                           ),
-                                          Text(
-                                            "Ketua Tim",
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: blackColor,
-                                            ),
-                                          ),
                                         ],
                                       ),
                                     );
                                   },
-                                ),
-                                CustomContainer(
-                                  title: 'Anggota',
-                                  status: 'Anggota',
-                                ),
-                                CustomContainer(
-                                  title: 'Anggota',
-                                  status: 'Anggota',
-                                ),
-                                CustomContainer(
-                                  title: 'Anggota',
-                                  status: 'Anggota',
-                                ),
-                                CustomContainer(
-                                  title: 'Anggota',
-                                  status: 'Anggota',
-                                ),
-                                CustomContainer(
-                                  title: 'Anggota',
-                                  status: 'Anggota',
-                                ),
-                                CustomContainer(
-                                  title: 'Anggota',
-                                  status: 'Anggota',
-                                ),
-                                CustomContainer(
-                                  title: 'Anggota',
-                                  status: 'Anggota',
                                 ),
                               ],
                             ),
@@ -302,11 +262,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     routeName: LandingScreen.routeName,
                                   );
                                 } else {
-                                  toastDanger(context, "Gagal",
-                                      homeNotifier.failure?.message ?? "Gagal");
-                                  _textEditingController.clear();
-                                  FocusScope.of(context)
-                                      .requestFocus(_focusNode);
+                                  if (homeNotifier.failure?.message ==
+                                      "Anda sudah selesai presentasi") {
+                                    toastSuccess(context, "Berhasil",
+                                        "Berhasil mengakhiri presentasi");
+                                    Navigation.replaceUntilNamed(
+                                        routeName: LandingScreen.routeName);
+                                  } else {
+                                    toastDanger(
+                                        context,
+                                        "Gagal",
+                                        homeNotifier.failure?.message ??
+                                            "Gagal");
+                                    _textEditingController.clear();
+                                    FocusScope.of(context)
+                                        .requestFocus(_focusNode);
+                                  }
                                 }
                               },
                             );
@@ -325,6 +296,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         Text(
                           "Jika scanner belum siap, silahkan klik dibawah ini!",
+                          textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -357,6 +329,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                             ),
                           ),
+                        ),
+                        const SizedBox(
+                          height: 12,
                         ),
                       ],
                     ),
